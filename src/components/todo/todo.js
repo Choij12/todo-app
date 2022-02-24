@@ -1,26 +1,33 @@
 import React, { useEffect, useState, useContext } from "react";
-import useForm from "../../hooks/form.js";
-import { Button, Label, Switch } from "@blueprintjs/core";
+import { Button, Label, Switch, Card, Elevation } from "@blueprintjs/core";
 import { SettingsContext } from "../../context/settings/context";
 import { v4 as uuid } from "uuid";
+import "./todo.scss";
 
 const ToDo = () => {
   const settings = useContext(SettingsContext);
   const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
-  const { handleChange, handleSubmit } = useForm(addItem);
   const [startIdx, setStartIdx] = useState(0);
   const [endIdx, setEndIdx] = useState(settings.numItems);
+  const [itemName, setItem] = useState("");
+  const [assignee, setAssignee] = useState("");
+  const [difficulty, setDifficulty] = useState(3);
 
-  function addItem(item) {
-    console.log(item);
-    item.id = uuid();
-    item.complete = false;
+  function handleSubmit(e) {
+    e.preventDefault();
+    let item = {
+      id: uuid(),
+      text: itemName,
+      complete: false,
+      assignee: assignee,
+      difficulty: difficulty,
+    };
     setList([...list, item]);
   }
-
   function deleteItem(id) {
-    const items = list.filter((item) => item.id !== id);
+    console.log(id);
+    const items = list.filter((itemA) => itemA.id !== id);
     setList(items);
   }
 
@@ -38,7 +45,6 @@ const ToDo = () => {
   useEffect(() => {
     let incompleteCount = list.filter((item) => !item.complete);
     setIncomplete(incompleteCount);
-    // document.title = `To Do List: ${incomplete}`;
   }, [list]);
 
   useEffect(() => {
@@ -47,8 +53,12 @@ const ToDo = () => {
   }, [settings.numItems]);
 
   function pagination() {
-    let data = incomplete.slice(startIdx, endIdx);
-    console.log("------->,", data);
+    let data;
+    if (settings.hide) {
+      data = incomplete.slice(startIdx, endIdx);
+    } else {
+      data = list.slice(startIdx, endIdx);
+    }
     return data;
   }
 
@@ -69,7 +79,22 @@ const ToDo = () => {
   function handleHide() {
     settings.setHide(!settings.hide);
   }
-
+  function handleItem(e) {
+    let { value } = e.target;
+    setItem(value);
+  }
+  function handleAssignee(e) {
+    let { value } = e.target;
+    setAssignee(value);
+  }
+  function handleDifficulty(e) {
+    let { value } = e.target;
+    setDifficulty(value);
+  }
+  function handleShowNumItems(e) {
+    let { value } = e.target;
+    settings.setNumItems(value);
+  }
   return (
     <>
       <header>
@@ -82,7 +107,7 @@ const ToDo = () => {
         <Label>
           <span>To Do Item</span>
           <input
-            onChange={handleChange}
+            onChange={handleItem}
             name="text"
             type="text"
             placeholder="Item Details"
@@ -92,7 +117,7 @@ const ToDo = () => {
         <Label>
           <span>Assigned To</span>
           <input
-            onChange={handleChange}
+            onChange={handleAssignee}
             name="assignee"
             type="text"
             placeholder="Assignee Name"
@@ -102,7 +127,7 @@ const ToDo = () => {
         <Label>
           <span>Difficulty</span>
           <input
-            onChange={handleChange}
+            onChange={handleDifficulty}
             defaultValue={3}
             type="range"
             min={1}
@@ -118,10 +143,28 @@ const ToDo = () => {
         <Label>
           <Switch onChange={handleHide}>Hide Completed Tasks</Switch>
         </Label>
+        <Label>
+          <span>Number of items</span>
+          <input
+            onChange={handleShowNumItems}
+            defaultValue={3}
+            type="range"
+            min={1}
+            max={5}
+            name="showNumItems"
+          />
+        </Label>
+        <Button onClick={handlePrevious}>PREVIOUS</Button>
+        <Button onClick={handleNext}>NEXT</Button>
       </form>
 
       {pagination().map((item) => (
-        <div key={item.id}>
+        <Card
+          className="cards"
+          key={item.id}
+          interactive={true}
+          elevation={Elevation.TWO}
+        >
           {settings.hide === false || item.complete === false ? (
             <section>
               <p>{item.text}</p>
@@ -135,12 +178,11 @@ const ToDo = () => {
                 Complete: {item.complete.toString()}
               </Switch>
               <hr />
+              <Button onClick={() => deleteItem(item.id)}>Delete</Button>
             </section>
           ) : null}
-        </div>
+        </Card>
       ))}
-      <Button onClick={handlePrevious}>PREVIOUS</Button>
-      <Button onClick={handleNext}>NEXT</Button>
     </>
   );
 };

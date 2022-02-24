@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const ThemeContext = React.createContext();
 
@@ -6,9 +6,9 @@ class Theme extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'light',
-      fontSize: '12px',
-    }
+      mode: "light",
+      fontSize: "12px",
+    };
   }
 
   render() {
@@ -16,7 +16,7 @@ class Theme extends React.Component {
       <ThemeContext.Provider value={this.state}>
         {this.props.children}
       </ThemeContext.Provider>
-    )
+    );
   }
 }
 
