@@ -8,12 +8,15 @@
     "@blueprintjs/core": "^3.51.3",
     "node-sass": "^6.0.1",
     "react": "17.0.2",
-    "react-bootstrap": "^1.6.1",
     "react-dom": "17.0.2",
-    "react-if": "^4.0.1",
+    "react-bootstrap": "^1.6.1",
+    "react-json-prettify": "^0.2.0",
+    "react-jsonschema-form": "1.8.1",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
-    "uuid": "^8.3.2"
+    "web-vitals": "^1.1.2",
+    "uuid": "^8.3.2",
+    "react-if": "^4.0.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.1",
