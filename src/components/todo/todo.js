@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Button, Label, Switch, Card, Elevation } from "@blueprintjs/core";
 import { SettingsContext } from "../../context/settings/context";
+import { LoginContext } from "../../context/auth/context";
 import { v4 as uuid } from "uuid";
 import "./todo.scss";
 
 const ToDo = () => {
   const settings = useContext(SettingsContext);
+  const auth = useContext(LoginContext);
   const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const [startIdx, setStartIdx] = useState(0);
@@ -178,7 +180,9 @@ const ToDo = () => {
                 Complete: {item.complete.toString()}
               </Switch>
               <hr />
-              <Button onClick={() => deleteItem(item.id)}>Delete</Button>
+              {auth.canHandler("delete") ? (
+                <Button onClick={() => deleteItem(item.id)}>Delete</Button>
+              ) : null}
             </section>
           ) : null}
         </Card>
