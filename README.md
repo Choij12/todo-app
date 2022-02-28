@@ -5,7 +5,9 @@
 
 2. In this phase, we’ll be adding an editor so that users can save their preferences for the application, allowing them to change some of the default behaviors
 
-3.  We’ll be requiring that users be logged in, in order to see the to do items. Additionally, based on their user type, they will be allowed (or denied) to perform actions such as editing or deleting them.
+3. We’ll be requiring that users be logged in, in order to see the to do items. Additionally, based on their user type, they will be allowed (or denied) to perform actions such as editing or deleting them.
+
+4. We’ll be requiring that users be logged in through a live authentication server, in order to see the to do items. Additionally, based on their user type, they will be allowed (or denied) to perform actions such as editing or deleting them. All To Do items will be stored in a database, accessed through a deployed API. 
 
 ## Phase 1 Requirements
 - In Phase 1, we’re going to perform some refactoring of the To Do application as built by another team. This application mixes application state and user settings at the top level and passes things around. It was a good proof of concept, but we need to make this production ready.
@@ -15,6 +17,9 @@
 
 ## Phase 3 Requirements
 - In Phase 3, we’d like to extend the functionality of the application by requiring users be logged in to view items and also restrict access based on user type. The user stories from Phases 1, and 2 remain unchanged. For this phase, we are now adding the following new user stories.
+
+## Phase 4 Requirements
+- In Phase 4, we will finalize the functionality of the application by connecting to live servers for login, authorization, and data access.
 
 ## Features
 - Style the application using the Blueprint Component API{target:_blank}
@@ -33,3 +38,10 @@
 - As a user, I want to ensure that only fellow users that are allowed to “create”, based on their user type, can add new To Do Items
 - As a user, I want to ensure that only fellow users that are allowed to “update”, based on their user type, can mark To Do Items complete
 - As a user, I want to ensure that only fellow users that are allowed to “delete”, based on their user type, can delete new To Do Items
+- Alter the Add, Toggle Complete, and Delete functions within your to do application to use your API instead of in memory state.
+- Fetch the current list of items from the database on application start
+Whenever you add/update/delete an item, refresh the state so the user can instantly see the change
+Consider: Do you re-fetch from the server every time you make a change? If so, how?
+- If not, how will you stay in sync?
+- Alter the Login Context to use the server to login users instead of our mock users list.
+Be sure to store the token in state as well as in a cookie so you can reference it later.

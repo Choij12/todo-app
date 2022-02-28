@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import cookie from "react-cookies";
 import jwt from "jsonwebtoken";
-const SECRET = process.env.REACT_APP_SECRET || "secretstring";
+import axios from "axios";
+
+const SECRET = process.env.REACT_APP_SECRET;
+const url = process.env.REACT_APP_API_URL;
 
 const testUsers = {
   admin: {
@@ -28,7 +31,6 @@ export const LoginContext = React.createContext();
 
 function LoginProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
-  // const [can, setCan] = useState(false);
   const [user, setUser] = useState({ capabilities: [] });
   const [token, setToken] = useState("");
 
@@ -36,13 +38,14 @@ function LoginProvider({ children }) {
     return user?.capabilities?.includes(capability);
   };
 
-  const login = (username, password) => {
-    console.log("LOGIN", username, testUsers[username]);
+  const signup = async (userSignupInfo) => {
+    let response = await axios.post(url + "/signup", userSignupInfo);
+    console.log(response);
+  };
+  const login = async (userSigninInfo) => {
     if (testUsers[username]) {
-      // Create a "good" token, like you'd get from a server
-      const token = jwt.sign(testUsers[username], SECRET);
-      console.log("TOKEN", token);
-      validateToken(token);
+      let response = await axios.post(url + "/signin", userSigninInfo);
+      console.log(response);
     }
   };
 
@@ -76,7 +79,7 @@ function LoginProvider({ children }) {
 
   return (
     <LoginContext.Provider
-      value={{ loggedIn, canHandler, user, login, logout, token }}
+      value={{ loggedIn, canHandler, user, login, logout, token, signup }}
     >
       {children}
     </LoginContext.Provider>

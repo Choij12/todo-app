@@ -9,6 +9,7 @@
     "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
+    "axios": "^0.26.0",
     "jsonwebtoken": "^8.5.1",
     "node-sass": "^6.0.1",
     "prop-types": "^15.7.2",
